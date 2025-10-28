@@ -372,7 +372,7 @@ git push
 
 ## Benefits of This Setup:
 
-✅ **Runs 4 times daily** (9 AM, 12 PM, 3 PM, 6 PM Qatar time)  
+✅ **Runs 4 times daily** (9 AM, 12 PM, 3 PM, 6 PM Local time)  
 ✅ **Completely free**  
 ✅ **Easy cookie updates** via GitHub Secrets  
 ✅ **Manual triggers** available  
