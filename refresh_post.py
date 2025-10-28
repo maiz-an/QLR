@@ -7,20 +7,39 @@ import re
 from bs4 import BeautifulSoup
 import os
 import sys
+import json
 
 # ========================================
-# PYTHONANYWHERE CONFIGURATION
+# GITHUB ACTIONS CONFIGURATION
 # ========================================
-# Detect if we're running on PythonAnywhere
-IS_PYTHONANYWHERE = 'PYTHONANYWHERE_DOMAIN' in os.environ
+# Check if running on GitHub Actions
+IS_GITHUB_ACTIONS = 'GITHUB_ACTIONS' in os.environ
 
-# Set appropriate paths
-if IS_PYTHONANYWHERE:
-    LOG_FILE = "/home/maizan/qatar_refresh/refresh.log"
-    print("🚀 Running on PythonAnywhere")
+if IS_GITHUB_ACTIONS:
+    print("🚀 Running on GitHub Actions")
+    # Get cookies from environment variable (GitHub Secrets)
+    COOKIES_JSON = os.getenv('QATAR_COOKIES')
+    if COOKIES_JSON:
+        COOKIES = json.loads(COOKIES_JSON)
+    else:
+        print("❌ No cookies found in environment variables")
+        sys.exit(1)
 else:
-    LOG_FILE = "refresh.log"
     print("💻 Running locally")
+    # Local cookies (for testing)
+    COOKIES = {
+        "_gcl_au": "1.1.1685154002.1760987933",
+        "_fbp": "fb.1.1760987933585.784645597794972293",
+        "qatarliving-sso-token": "10169288",
+        "qat": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJhdWQiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJpYXQiOjE3NjEwMjYyNDIsImV4cCI6MTc2MzAxMzQ0MiwidXNlciI6eyJzdGF0dXMiOiIxIiwibGFuZ3VhZ2UiOiIiLCJjcmVhdGVkIjoiMTc1OTY3NDA0MyIsImFjY2VzcyI6IjE3NjA4Nzc2NTMiLCJsb2dpbiI6MTc2MTAyNjI0MiwiaW5pdCI6Iml0c21haXphbkBnbWFpbC5jb20iLCJ0aW1lem9uZSI6bnVsbCwidWlkIjoiMTAxNjkyODgiLCJxbG5leHRfdXNlcl9pZCI6MCwibmFtZSI6Im1haXphbiIsImFsaWFzIjoibWFpemFuIiwiZW1haWwiOiJpdHNtYWl6YW5AZ21haWwuY29tIiwicGhvbmUiOiIrOTc0MzAyNjQ3NjAiLCJwYXRoIjoidXNlci9tYWl6YW4iLCJpbWFnZSI6Imh0dHBzOi8vZmlsZXMucWF0YXJsaXZpbmcuY29tL3VzZXJzLzIwMjUvMTAvMTEvUFJPRjFfMTF6b24ucG5nIiwiaXNfYWRtaW4iOmZhbHNlLCJwZXJtaXNzaW9ucyI6W10sInJvbGVzIjpbInZlcmlmaWVkX3VzZXIiXWSic2hvd3Jvb21faW5mbyI6W10sInN1YnNjcmlwdGlvbiI6bnVsbH19.N9JLLAMzie7d7P5E0Ds1epUOgOU_LfkrXBDUItZOxGI",
+        "intercom-device-id-vxga6d2h": "016af7de-9c51-468c-ae17-45881cda3abe",
+        "_gid": "GA1.2.2115110935.1761575642",
+        "has_js": "1",
+        "_gat": "1",
+        "_ga_L8G5Y1WPNH": "GS2.1.s1761647270$o17$g1$t1761647271$j59$l0$h0",
+        "_ga": "GA1.1.102102702.1760987933",
+        "intercom-session-vxga6d2h": "MEhkREl4Y1EyTlh3ckx1eG9kNmptK0dVTSs1by91by8zZ2tLZ0lybmNBRkYyeUdCM2JQWVBhRWdmRjg2bUdzSzNLSCtJdTIyYVZSQ3dZb3J6Y0R4RUw3V3ZxK0FObi9yb1dJS3gxNXNUaUE9LS02MGplTUYzYkdKYVdaaFpFMlM4bnJRPT0"
+    }
 
 # ========================================
 # APPLICATION CONFIGURATION
@@ -34,23 +53,6 @@ USER_AGENTS = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121 Safari/537.36",
 ]
 
-# ========================================
-# COOKIES - UPDATE USING THE COOKIE FINDER BELOW
-# ========================================
-COOKIES = {
-    "_gcl_au": "1.1.1685154002.1760987933",
-    "_fbp": "fb.1.1760987933585.784645597794972293",
-    "qatarliving-sso-token": "10169288",
-    "qat": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJhdWQiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJpYXQiOjE3NjEwMjYyNDIsImV4cCI6MTc2MzAxMzQ0MiwidXNlciI6eyJzdGF0dXMiOiIxIiwibGFuZ3VhZ2UiOiIiLCJjcmVhdGVkIjoiMTc1OTY3NDA0MyIsImFjY2VzcyI6IjE3NjA4Nzc2NTMiLCJsb2dpbiI6MTc2MTAyNjI0MiwiaW5pdCI6Iml0c21haXphbkBnbWFpbC5jb20iLCJ0aW1lem9uZSI6bnVsbCwidWlkIjoiMTAxNjkyODgiLCJxbG5leHRfdXNlcl9pZCI6MCwibmFtZSI6Im1haXphbiIsImFsaWFzIjoibWFpemFuIiwiZW1haWwiOiJpdHNtYWl6YW5AZ21haWwuY29tIiwicGhvbmUiOiIrOTc0MzAyNjQ3NjAiLCJwYXRoIjoidXNlci9tYWl6YW4iLCJpbWFnZSI6Imh0dHBzOi8vZmlsZXMucWF0YXJsaXZpbmcuY29tL3VzZXJzLzIwMjUvMTAvMTEvUFJPRjFfMTF6b24ucG5nIiwiaXNfYWRtaW4iOmZhbHNlLCJwZXJtaXNzaW9ucyI6W10sInJvbGVzIjpbInZlcmlmaWVkX3VzZXIiXWSic2hvd3Jvb21faW5mbyI6W10sInN1YnNjcmlwdGlvbiI6bnVsbH19.N9JLLAMzie7d7P5E0Ds1epUOgOU_LfkrXBDUItZOxGI",
-    "intercom-device-id-vxga6d2h": "016af7de-9c51-468c-ae17-45881cda3abe",
-    "_gid": "GA1.2.2115110935.1761575642",
-    "has_js": "1",
-    "_gat": "1",
-    "_ga_L8G5Y1WPNH": "GS2.1.s1761647270$o17$g1$t1761647271$j59$l0$h0",
-    "_ga": "GA1.1.102102702.1760987933",
-    "intercom-session-vxga6d2h": "MEhkREl4Y1EyTlh3ckx1eG9kNmptK0dVTSs1by91by8zZ2tLZ0lybmNBRkYyeUdCM2JQWVBhRWdmRjg2bUdzSzNLSCtJdTIyYVZSQ3dZb3J6Y0R4RUw3V3ZxK0FObi9yb1dJS3gxNXNUaUE9LS02MGplTUYzYkdKYVdaaFpFMlM4bnJRPT0"
-}
-
 MAX_RETRIES = 3
 MAX_WAIT = 15
 
@@ -61,8 +63,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
     handlers=[
-        logging.FileHandler(LOG_FILE),
-        logging.StreamHandler(sys.stdout)  # Also print to console
+        logging.StreamHandler(sys.stdout)  # GitHub Actions captures stdout
     ]
 )
 
@@ -76,35 +77,34 @@ COOKIE_FINDER_SCRIPT = """// === QATAR LIVING COOKIE FINDER ===
 // 2. Make sure you're logged in
 // 3. Press F12 → Console
 // 4. Paste this code and press Enter
-// 5. Copy the output below and replace COOKIES above
+// 5. Copy the JSON output and add to GitHub Secrets
 
 var cookies = document.cookie.split(';');
+var cookieObj = {};
 console.log('🔐 Found ' + cookies.length + ' cookies:');
 console.log('='.repeat(50));
 
-var pythonCode = "COOKIES = {\\n";
-cookies.forEach((cookie, index) => {
+cookies.forEach((cookie) => {
     var [name, value] = cookie.trim().split('=');
     var displayValue = value ? (value.length > 50 ? value.substring(0, 50) + '...' : value) : '(empty)';
     console.log('📌 ' + name + ' = ' + displayValue);
-    pythonCode += '    "' + name + '": "' + (value || '') + '"';
-    if (index < cookies.length - 1) pythonCode += ',';
-    pythonCode += '\\n';
+    cookieObj[name] = value || '';
 });
-pythonCode += '}';
 
-// Copy to clipboard
+console.log('='.repeat(50));
+console.log('📋 JSON for GitHub Secrets:');
+console.log(JSON.stringify(cookieObj, null, 2));
+
+// Copy JSON to clipboard
 var temp = document.createElement('textarea');
-temp.value = pythonCode;
+temp.value = JSON.stringify(cookieObj);
 document.body.appendChild(temp);
 temp.select();
 document.execCommand('copy');
 document.body.removeChild(temp);
 
-console.log('='.repeat(50));
-console.log('✅ Python code copied to clipboard!');
-console.log('📋 Now replace the COOKIES in your Python script with:');
-console.log(pythonCode);
+console.log('✅ JSON copied to clipboard!');
+console.log('💡 Add this to GitHub Secrets as QATAR_COOKIES');
 """
 
 # ========================================
@@ -245,20 +245,6 @@ def refresh_post():
     return False
 
 # ========================================
-# SHOW COOKIE FINDER INSTRUCTIONS
-# ========================================
-def show_cookie_finder_instructions():
-    print("🔄 Need fresh cookies? Here's how:")
-    print("1. Go to: https://www.qatarliving.com")
-    print("2. Make sure you're LOGGED IN")
-    print("3. Press F12 → Console tab")
-    print("4. Paste this code and press Enter:")
-    print("\n" + "="*50)
-    print(COOKIE_FINDER_SCRIPT)
-    print("="*50)
-    print("\n5. Copy the output and replace the COOKIES above")
-
-# ========================================
 # MAIN
 # ========================================
 if __name__ == "__main__":
@@ -274,22 +260,19 @@ if __name__ == "__main__":
 
     if not test_cookies():
         print("💥 Authentication failed - cookies may be expired")
-        print("-" * 50)
-        show_cookie_finder_instructions()
-        # Log the error
-        logging.error("Authentication failed - cookies may be expired")
-        # Exit with error code for scheduled tasks
+        if not IS_GITHUB_ACTIONS:
+            print("-" * 50)
+            print("🔄 Need fresh cookies? Run this in browser console:")
+            print(COOKIE_FINDER_SCRIPT)
         sys.exit(1)
     else:
         print("🔄 Proceeding with bump...")
         if refresh_post():
             print("🎉 Refresh completed successfully!")
-            logging.info("SUCCESS: Post bumped successfully")
-            sys.exit(0)  # Success exit code
+            sys.exit(0)
         else:
             print("💥 Refresh failed")
-            logging.error("FAILED: Post bump failed")
-            sys.exit(1)  # Error exit code
+            sys.exit(1)
 
     print("-" * 50)
     print(f"🕒 Finished at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
