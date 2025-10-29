@@ -2,8 +2,8 @@ name: Qatar Living Auto Refresh
 
 on:
   schedule:
-    # Run at 9 AM, 12 PM, 3 PM, 6 PM Qatar time (6 AM, 9 AM, 12 PM, 3 PM UTC)
-    - cron: '0 6,9,12,15 * * *'
+    # Run at 6:30 AM, 12 PM, 3 PM, Qatar time
+    - cron: '30 3,9,12 * * *'
   workflow_dispatch:  # Allow manual triggers
 
 jobs:
