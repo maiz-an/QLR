@@ -393,4 +393,4 @@ git push
 - **Click on any run** to see detailed logs
 - **Set up email notifications** for failures
 
-This is much better than PythonAnywhere and completely free! 🚀
+This is better and completely free! 🚀
