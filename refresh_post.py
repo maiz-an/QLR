@@ -27,19 +27,7 @@ if IS_GITHUB_ACTIONS:
 else:
     print("💻 Running locally")
     # Local cookies (for testing)
-    COOKIES = {
-        "_gcl_au": "1.1.1685154002.1760987933",
-        "_fbp": "fb.1.1760987933585.784645597794972293",
-        "qatarliving-sso-token": "10169288",
-        "qat": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJhdWQiOiJodHRwczovL3d3dy5xYXRhcmxpdmluZy5jb20iLCJpYXQiOjE3NjEwMjYyNDIsImV4cCI6MTc2MzAxMzQ0MiwidXNlciI6eyJzdGF0dXMiOiIxIiwibGFuZ3VhZ2UiOiIiLCJjcmVhdGVkIjoiMTc1OTY3NDA0MyIsImFjY2VzcyI6IjE3NjA4Nzc2NTMiLCJsb2dpbiI6MTc2MTAyNjI0MiwiaW5pdCI6Iml0c21haXphbkBnbWFpbC5jb20iLCJ0aW1lem9uZSI6bnVsbCwidWlkIjoiMTAxNjkyODgiLCJxbG5leHRfdXNlcl9pZCI6MCwibmFtZSI6Im1haXphbiIsImFsaWFzIjoibWFpemFuIiwiZW1haWwiOiJpdHNtYWl6YW5AZ21haWwuY29tIiwicGhvbmUiOiIrOTc0MzAyNjQ3NjAiLCJwYXRoIjoidXNlci9tYWl6YW4iLCJpbWFnZSI6Imh0dHBzOi8vZmlsZXMucWF0YXJsaXZpbmcuY29tL3VzZXJzLzIwMjUvMTAvMTEvUFJPRjFfMTF6b24ucG5nIiwiaXNfYWRtaW4iOmZhbHNlLCJwZXJtaXNzaW9ucyI6W10sInJvbGVzIjpbInZlcmlmaWVkX3VzZXIiXWSic2hvd3Jvb21faW5mbyI6W10sInN1YnNjcmlwdGlvbiI6bnVsbH19.N9JLLAMzie7d7P5E0Ds1epUOgOU_LfkrXBDUItZOxGI",
-        "intercom-device-id-vxga6d2h": "016af7de-9c51-468c-ae17-45881cda3abe",
-        "_gid": "GA1.2.2115110935.1761575642",
-        "has_js": "1",
-        "_gat": "1",
-        "_ga_L8G5Y1WPNH": "GS2.1.s1761647270$o17$g1$t1761647271$j59$l0$h0",
-        "_ga": "GA1.1.102102702.1760987933",
-        "intercom-session-vxga6d2h": "MEhkREl4Y1EyTlh3ckx1eG9kNmptK0dVTSs1by91by8zZ2tLZ0lybmNBRkYyeUdCM2JQWVBhRWdmRjg2bUdzSzNLSCtJdTIyYVZSQ3dZb3J6Y0R4RUw3V3ZxK0FObi9yb1dJS3gxNXNUaUE9LS02MGplTUYzYkdKYVdaaFpFMlM4bnJRPT0"
-    }
+    COOKIES = {"_gcl_au":"1.1.1685154002.1760987933","_fbp":"fb.1.1760987933585.784645597794972293","intercom-device-id-vxga6d2h":"016af7de-9c51-468c-ae17-45881cda3abe","has_js":"1","_gid":"GA1.2.1486520980.1767533357","_gat":"1","_ga_L8G5Y1WPNH":"GS2.1.s1767533357$o31$g1$t1767533546$j60$l0$h0","_ga":"GA1.1.102102702.1760987933"}
 
 # ========================================
 # APPLICATION CONFIGURATION
