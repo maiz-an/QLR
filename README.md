@@ -55,14 +55,14 @@ A GitHub Actions workflow that automatically bumps your Qatar Living job posts t
    - The JSON is automatically copied to your clipboard
    - Save it somewhere safe (like a text file) for the next step
 
-### Step 3: Get Your Bump URL
+### Step 3: Get Your Refresh Button URL
 
 1. **Go to Your Job Post**
    - Navigate to your job posting on Qatar Living
-   - Look for the "Bump to top" button/link
+   - Look for the "Refresh this ad"
 
-2. **Copy the Bump URL**
-   - Right-click on "Bump to top" → "Copy link address"
+2. **Copy the Refresh this ad URL**
+   - Right-click on "Refresh this ad" → "Copy link address"
    - Or find it in the page source
    - The URL should look like:
 
@@ -116,6 +116,13 @@ To modify the schedule, edit `.github/workflows/auto-refresh.yml`:
 ```yaml
 schedule:
   - cron: '30 4,9,12 * * *'  # Change these times
+```
+
+other corntime examples
+```yaml
+  - cron: '0 9,12,16 * * *'      # 9 AM, 12 PM, 4 PM
+  - cron: '0 8,13,17 * * *'      # 8 AM, 1 PM, 5 PM
+  - cron: '0 10,14,18 * * *'     # 10 AM, 2 PM, 6 PM
 ```
 
 ### Manual Runs
